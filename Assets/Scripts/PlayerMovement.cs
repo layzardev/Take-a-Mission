@@ -11,10 +11,12 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isJumping;
 
+    private bool isFacingRight;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        isFacingRight = true;
     }
 
     // Update is called once per frame
@@ -27,6 +29,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isJumping == false)
         {
             rb.AddForce(new Vector2(rb.linearVelocity.x, jump));
+        }
+
+        if (!isFacingRight && Move > 0)
+        {
+            Flip();
+        } else if (isFacingRight && Move < 0)
+        {
+            Flip();
         }
     }
 
@@ -44,5 +54,13 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = true;
         }
+    }
+
+    public void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
     }
 }
