@@ -13,6 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isFacingRight;
 
+    public float KBForce;
+    public float KBCounter;
+    public float KBTotalTime;
+
+    public bool KnockFromRight;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,11 +30,18 @@ public class PlayerMovement : MonoBehaviour
     {
         Move = Input.GetAxis("Horizontal");
 
-        rb.linearVelocity = new Vector2(speed * Move, rb.linearVelocity.y);
-
-        if (Input.GetButtonDown("Jump") && isJumping == false)
+        if (KBCounter <= 0)
         {
-            rb.AddForce(new Vector2(rb.linearVelocity.x, jump));
+            rb.velocity = new Vector2(speed * Move, rb.velocity.y);
+
+            if (Input.GetButtonDown("Jump") && isJumping == false)
+            {
+                rb.AddForce(new Vector2(0f, jump), ForceMode2D.Impulse);
+            }
+        }
+        else
+        {
+            KBCounter -= Time.deltaTime;
         }
 
         if (!isFacingRight && Move > 0)
@@ -62,5 +75,25 @@ public class PlayerMovement : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
+    }
+
+    // RESET kondisi knockback supaya tidak ikut mental pas respawn
+    public void ResetKnockback()
+    {
+        KBCounter = 0;             // matikan counter knockback
+        rb.velocity = Vector2.zero; // hentikan gerakan mental
+    }
+
+    public void ApplyKnockback(bool fromRight)
+    {
+        ResetKnockback(); // reset biar ga ada sisa gerakan
+
+        Vector2 forceDir;
+        if (fromRight)
+            forceDir = new Vector2(-KBForce, KBForce);
+        else
+            forceDir = new Vector2(KBForce, KBForce);
+
+        rb.AddForce(forceDir, ForceMode2D.Impulse); // dorong sekali pakai impulse
     }
 }
