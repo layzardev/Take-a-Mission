@@ -29,12 +29,12 @@ public class EnemyPatrol : MonoBehaviour
             rb.linearVelocity = new Vector2(-speed, 0);  // arah kiri
         }
 
-        if(Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+        if(Vector2.Distance(transform.position, currentPoint.position) < 1f && currentPoint == pointB.transform)
         {
             flip();
             currentPoint = pointA.transform;
         }
-        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+        if (Vector2.Distance(transform.position, currentPoint.position) < 1f && currentPoint == pointA.transform)
         {
             flip();
             currentPoint = pointB.transform;

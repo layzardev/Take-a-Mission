@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c1b545ea07954574eabbb30b69a71a2f
+guid: 7bc268e67533be2429facac2d5314d51
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 297761703447499198
-    second: enemy_0
+      213: -2683644126277252220
+    second: spike_obstacle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: enemy_0
+      name: spike_obstacle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 256
         height: 256
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb114b111bcd12400800000000000000
-      internalID: 297761703447499198
+      spriteID: 48b4eadb2e7c1cad0800000000000000
+      internalID: -2683644126277252220
       vertices: []
       indices: 
       edges: []
@@ -151,8 +151,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 0cdb45c1fb67f334291c6b9adb5e4800
+    internalID: 990793424
     vertices: []
     indices: 
     edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      enemy_0: 297761703447499198
+      spike_obstacle_0: -2683644126277252220
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

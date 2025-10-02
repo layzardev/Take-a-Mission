@@ -33,17 +33,17 @@ public class PlayerMovement : MonoBehaviour
         // Knockback
         if (KBCounter <= 0)
         {
-            rb.velocity = new Vector2(speed * Move, rb.velocity.y);
+            rb.linearVelocity = new Vector2(speed * Move, rb.linearVelocity.y);
         }
         else
         {
             if(KnockFromRight == true)
             {
-                rb.velocity = new Vector2(-KBForce, KBForce);
+                rb.linearVelocity = new Vector2(-KBForce, KBForce);
             }
             if (KnockFromRight == false)
             {
-                rb.velocity = new Vector2(KBForce, KBForce);
+                rb.linearVelocity = new Vector2(KBForce, KBForce);
             }
 
             KBCounter -= Time.deltaTime;
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isJumping == false)
         {
-            rb.AddForce(new Vector2(rb.velocity.x, jump));
+            rb.AddForce(new Vector2(rb.linearVelocity.x, jump));
         }
 
         if (!isFacingRight && Move > 0)
@@ -91,6 +91,6 @@ public class PlayerMovement : MonoBehaviour
     public void ResetKnockback()
     {
         KBCounter = 0;             // matikan counter knockback
-        rb.velocity = Vector2.zero; // hentikan gerakan mental
+        rb.linearVelocity = Vector2.zero; // hentikan gerakan mental
     }
 }
