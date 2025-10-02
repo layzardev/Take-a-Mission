@@ -9,19 +9,17 @@ public class EnemyDamage : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.tag == "Player")
         {
             playerMovement.KBCounter = playerMovement.KBTotalTime;
-
             if (collision.transform.position.x <= transform.position.x)
             {
-                playerMovement.ApplyKnockback(true);  // mental ke kiri
+                playerMovement.KnockFromRight = true;
             }
-            else
+            if (collision.transform.position.x > transform.position.x)
             {
-                playerMovement.ApplyKnockback(false); // mental ke kanan
+                playerMovement.KnockFromRight = false;
             }
-
             playerHealth.TakeDamage(damage);
         }
     }

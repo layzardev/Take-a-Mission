@@ -73,8 +73,7 @@ public class HealthBar : MonoBehaviour
 
         // Reset velocity physics
         Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0f;
+        rb.velocity = Vector2.zero;      
 
         // Pindahkan player ke posisi respawn point persis
         playerTransform.position = nearest.position;
