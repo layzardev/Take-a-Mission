@@ -12,16 +12,18 @@ public class HealthBar : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
 
-    [Header("Respawn Settings")]
-    public Transform[] respawnPoints;   // isi daftar titik spawn di Inspector
-    public Transform playerTransform;   // drag Player object di Inspector
+    [Header("Game Over Manager")]
+    public GameOverManager gameOverManager; // drag GameOverManager di Inspector
 
     void Start()
     {
         currentHealth = maxHealth;
 
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
+        if (healthBar != null)
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
+        }
 
         UpdateHealthUI();
     }
@@ -35,53 +37,32 @@ public class HealthBar : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            RespawnToNearestPoint();
+            if (gameOverManager != null)
+            {
+                gameOverManager.ShowGameOver();
+            }
+            else
+            {
+                Debug.LogWarning("GameOverManager belum di-set! Reset health langsung.");
+                ResetHealth();
+            }
         }
     }
 
     void UpdateHealthUI()
     {
-        healthBar.value = currentHealth;
-        healthText.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+        if (healthBar != null)
+            healthBar.value = currentHealth;
+
+        if (healthText != null)
+            healthText.text = currentHealth.ToString() + "/" + maxHealth.ToString();
     }
 
-    void RespawnToNearestPoint()
+    // Method ini bisa dipanggil dari tombol Restart di GameOverManager
+    public void ResetHealth()
     {
-        if (respawnPoints == null || respawnPoints.Length == 0)
-        {
-            Debug.LogWarning("Respawn point belum diatur!");
-            return;
-        }
-
-        // Cari spawn point terdekat
-        Transform nearest = respawnPoints[0];
-        float minDistance = Vector2.Distance(playerTransform.position, nearest.position);
-
-        foreach (Transform point in respawnPoints)
-        {
-            float dist = Vector2.Distance(playerTransform.position, point.position);
-            if (dist < minDistance)
-            {
-                nearest = point;
-                minDistance = dist;
-            }
-        }
-
-        // Reset knockback
-        PlayerMovement pm = playerTransform.GetComponent<PlayerMovement>();
-        pm.ResetKnockback();
-
-        // Reset velocity physics
-        Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
-        rb.linearVelocity = Vector2.zero;      
-
-        // Pindahkan player ke posisi respawn point persis
-        playerTransform.position = nearest.position;
-
-        // Reset health ke full
         currentHealth = maxHealth;
         UpdateHealthUI();
-
-        Debug.Log("Player respawn di: " + nearest.name);
+        Debug.Log("Health sudah full kembali.");
     }
 }
