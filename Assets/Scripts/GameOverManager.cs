@@ -5,13 +5,13 @@ public class GameOverManager : MonoBehaviour
 {
     [Header("UI Game Over")]
     public GameObject gameOverPanel;
-    public bool isGameOver = false;
 
     [Header("Respawn")]
     public Transform respawnPoint;
     public GameObject player;
+    public HealthBar healthBar;
 
-    public HealthBar healthBar; // drag HealthBar
+    private bool isGameOver = false;
 
     void Start()
     {
@@ -27,25 +27,9 @@ public class GameOverManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
 
-        // Reset physics & knockback sebelum pause
-        if (player != null)
-        {
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-            }
+        ResetPlayerPhysics();
 
-            PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            if (pm != null)
-            {
-                pm.KBCounter = 0f;
-                pm.KnockFromRight = false;
-            }
-        }
-
-        Time.timeScale = 0f; // pause game
+        Time.timeScale = 0f;
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
@@ -58,40 +42,51 @@ public class GameOverManager : MonoBehaviour
         Time.timeScale = 1f;
         isGameOver = false;
 
-        if (player != null && respawnPoint != null)
-        {
-            player.transform.position = respawnPoint.position;
-
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-            }
-
-            PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            if (pm != null)
-            {
-                pm.KBCounter = 0f;
-                pm.KnockFromRight = false;
-            }
-
-            player.SetActive(true);
-
-            // Reset health setelah respawn
-            if (healthBar != null)
-            {
-                healthBar.ResetHealth();
-            }
-        }
+        ResetPlayer();
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
+
+        BgmManager.instance?.RestartBGM();
     }
 
     public void BackHome()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        BgmManager.instance?.StopBGM();
+        SceneController.instance?.LoadScene("MainMenu");
+    }
+
+    private void ResetPlayerPhysics()
+    {
+        if (player == null) return;
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        PlayerMovement pm = player.GetComponent<PlayerMovement>();
+        if (pm != null)
+        {
+            pm.KBCounter = 0f;
+            pm.KnockFromRight = false;
+        }
+    }
+
+    private void ResetPlayer()
+    {
+        if (player == null || respawnPoint == null) return;
+
+        player.transform.position = respawnPoint.position;
+        ResetPlayerPhysics();
+
+        PlayerMovement pm = player.GetComponent<PlayerMovement>();
+        pm?.ResetBlinkScreen();
+
+        player.SetActive(true);
+        healthBar?.ResetHealth();
     }
 }

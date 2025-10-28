@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
 
     public bool KnockFromRight;
 
+    [Header("Blink Settings")]
+    public GameObject blinkPanel; // drag panel merah di Inspector
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -93,4 +96,12 @@ public class PlayerMovement : MonoBehaviour
         KBCounter = 0;             // matikan counter knockback
         rb.linearVelocity = Vector2.zero; // hentikan gerakan mental
     }
+
+    // Fungsi untuk mematikan efek blink
+    public void ResetBlinkScreen()
+    {
+        if (blinkPanel != null)
+            blinkPanel.SetActive(false);
+    }
+
 }
